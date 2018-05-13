@@ -1,0 +1,27 @@
+```{r}
+# Biblioteca necessaria para carregar dados
+library(e1071)
+
+# Biblioteca necessaria para apresentar a matrix de confus?o
+library(caret)
+
+# Carrega dados de um arquivo CSV, nesses dados que aplicaremos o modelo
+# Adicionamos colClasses=c("classification"="character") para a linguagem interpretar a coluna de classificação como texto.
+copus_treinamento <-read.csv ("spambase.data", header = T, sep=",", stringsAsFactors=F,  colClasses=c("classification"="character"))
+
+# Definimos um treinamento
+train_control <- trainControl(method="cv", number=10)
+
+# ajuste nos parametros do algoritmo
+train_control <- trainControl(method="repeatedcv", number=10, repeats=1)
+
+# treinar o modelo
+model <- train(classification~., data=copus_treinamento, trControl=train_control, method="nb")
+
+#Matrix de confus?o, com acurácia do modelo
+confusionMatrix(model)
+
+# apresenta resultados do modelo
+print(model)
+
+``` 
